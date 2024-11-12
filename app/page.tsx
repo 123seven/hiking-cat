@@ -1,6 +1,5 @@
-// @ts-nocheck
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, Dispatch, SetStateAction } from "react";
 import { Card } from "@/components/ui/card";
 import {
   Dialog,
@@ -18,6 +17,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Star, Search } from "lucide-react";
+
+type Route = (typeof routes)[number];
+type Filters = {
+  search: string;
+  scenery: number;
+  difficulty: number;
+  days: number;
+  backpack: string;
+};
 
 const routes = [
   {
@@ -4336,8 +4344,8 @@ const routes = [
   },
 ];
 
-const RouteCard = ({ route }) => {
-  const renderStars = (count) => {
+const RouteCard = ({ route }: { route: Route }) => {
+  const renderStars = (count: number) => {
     return Array(count)
       .fill(0)
       .map((_, index) => (
@@ -4412,7 +4420,13 @@ const RouteCard = ({ route }) => {
   );
 };
 
-const FilterBar = ({ filters, setFilters }) => {
+const FilterBar = ({
+  filters,
+  setFilters,
+}: {
+  filters: Filters;
+  setFilters: Dispatch<SetStateAction<Filters>>;
+}) => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
       <div className="relative">
@@ -4422,7 +4436,7 @@ const FilterBar = ({ filters, setFilters }) => {
           className="pl-8"
           value={filters.search}
           onChange={(e) =>
-            setFilters((prev) => ({ ...prev, search: e.target.value }))
+            setFilters((prev: Filters) => ({ ...prev, search: e.target.value }))
           }
         />
       </div>
@@ -4430,7 +4444,7 @@ const FilterBar = ({ filters, setFilters }) => {
       <Select
         value={String(filters.scenery)}
         onValueChange={(value) =>
-          setFilters((prev) => ({ ...prev, scenery: Number(value) }))
+          setFilters((prev: Filters) => ({ ...prev, scenery: Number(value) }))
         }
       >
         <SelectTrigger>
@@ -4468,7 +4482,7 @@ const FilterBar = ({ filters, setFilters }) => {
       <Select
         value={String(filters.days)}
         onValueChange={(value) =>
-          setFilters((prev) => ({ ...prev, days: Number(value) }))
+          setFilters((prev: Filters) => ({ ...prev, days: Number(value) }))
         }
       >
         <SelectTrigger>
@@ -4487,7 +4501,7 @@ const FilterBar = ({ filters, setFilters }) => {
       <Select
         value={filters.backpack}
         onValueChange={(value) =>
-          setFilters((prev) => ({ ...prev, backpack: value }))
+          setFilters((prev: Filters) => ({ ...prev, backpack: value }))
         }
       >
         <SelectTrigger>
